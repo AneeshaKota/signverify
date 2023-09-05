@@ -4,6 +4,8 @@ import { DidResolutionResult, DIDDocument, DidWithKeys } from './types.js';
 import {  Resolver } from 'did-resolver';
 import { getResolver } from 'web-did-resolver';
 import { DidMethodResolver } from './did-resolver.js';
+import { secp256k1 } from '../jose/algorithms/secp256k1.js';
+import { PrivateJwk, PublicJwk } from '../index.js';
 
 export class DidWebResolver implements DidMethodResolver {
     method(): string {
@@ -22,13 +24,18 @@ export class DidWebResolver implements DidMethodResolver {
     }
   
     /**
-     * generates a new ed25519 public/private key pair. Creates a DID using the private key
+     * generates a new ed25519/secp256k1 public/private key pair. Creates a DID using the private key
      * @returns did, public key, private key
      */
-    public static async generate(did:string){
+    public static async generate(did: string, type?: string){
 
         let keyId = did+"#key-1"
-        const { publicJwk, privateJwk } = await ed25519.generateKeyPair();
+        let keyPair: { publicJwk: PublicJwk, privateJwk: PrivateJwk}
+        if(type === 'secp256k1') {
+          keyPair = await secp256k1.generateKeyPair();
+        } else {
+          keyPair = await ed25519.generateKeyPair();
+        }
 
         const didDocument: DIDDocument = {
             '@context': [
@@ -41,7 +48,7 @@ export class DidWebResolver implements DidMethodResolver {
                 id           : keyId,
                 type         : 'JsonWebKey2020',
                 controller   : did,
-                publicKeyJwk : publicJwk
+                publicKeyJwk : keyPair.publicJwk
             }],
             'authentication'       : [keyId],
             'assertionMethod'      : [keyId],
@@ -49,7 +56,7 @@ export class DidWebResolver implements DidMethodResolver {
             'capabilityInvocation' : [keyId]
         };
   
-      return { did, keyId, keyPair: { publicJwk, privateJwk }, didDocument };
+      return { did, keyId, keyPair, didDocument };
     }
   
     /**

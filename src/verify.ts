@@ -1,12 +1,12 @@
 
-import { DidWithKeys } from "./did/types.js";
+import { DIDDocument, DidWithKeys } from "./did/types.js";
 import { GeneralJws, SignatureInput } from "./jose/general/types.js";
 import { GeneralJwsVerifier } from "./jose/general/verifier.js";
 import { PublicJwk } from "./jose/types.js";
 import { generateCid, parseCid } from "./utils/cid.js";
 
 export type APIBody = {
-    content: Object,
+    content: DIDDocument,
     authorisation : GeneralJws
 }
 
