@@ -14,9 +14,9 @@ export declare class DidResolver {
     resolve(did: string): Promise<DidResolutionResult>;
 }
 /**
-* A generalized interface that can be implemented for individual
-* DID methods
-*/
+ * A generalized interface that can be implemented for individual
+ * DID methods
+ */
 export interface DidMethodResolver {
     /**
      * @returns the DID method supported by {@link DidMethodResolver.resolve}

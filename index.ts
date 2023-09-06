@@ -39,15 +39,16 @@ let didResolver = new DidResolver()
 const initDIDweb = async () => {
     let did = await DidWebResolver.generate("did:web:tel-did-web-storage.dxt.online:didDocs:Jane-DOE", "secp256k1")
     console.log("This is my did", did)
+    const { didDocument: _, ...didNew} = did;
     let did2 = await DidWebResolver.generate("did:web:tel-did-web-storage.dxt.online:didDocs:Jane-DOE", "secp256k1")
 
     let content = did.didDocument
     // const { id: _, ...fakeDid} = content;
     // let content = { ...did.didDocument, name: "aneesha" }
-    console.log("verification method - ", content.verificationMethod);
+    console.log("verification method - ", content?.verificationMethod);
     
     // as the message sender, I have access to my private key so can create the authorisation object
-    let authorisation = await sign(content, createSignatureInput(did))
+    let authorisation = await sign(content, createSignatureInput(didNew))
 
     let signed_message: any = {
         content: content,
@@ -63,7 +64,6 @@ const initDIDweb = async () => {
 
     let verified_message_did = await verifyWithPublicKey(signed_message, publicKey!)
     console.log("verification result", verified_message_did)
-
 }
 
 console.log("hello")

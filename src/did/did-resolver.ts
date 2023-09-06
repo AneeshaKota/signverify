@@ -1,5 +1,3 @@
-import { Resolver } from 'did-resolver'
-import { getResolver } from 'web-did-resolver'
 import { Did } from '../did/did.js';
 import { DidResolutionResult } from './types.js'
 import { DidKeyResolver } from './did-key-resolver.js';
@@ -50,7 +48,7 @@ export class DidResolver {
   }
 
 
-  /**
+/**
  * A generalized interface that can be implemented for individual
  * DID methods
  */

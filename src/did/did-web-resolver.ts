@@ -28,7 +28,7 @@ export class DidWebResolver implements DidMethodResolver {
      * @returns did, public key, private key
      */
     public static async generate(did: string, type?: string){
-
+        
         let keyId = did+"#key-1"
         let keyPair: { publicJwk: PublicJwk, privateJwk: PrivateJwk}
         if(type === 'secp256k1') {
