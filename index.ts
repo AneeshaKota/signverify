@@ -37,12 +37,12 @@ let didResolver = new DidResolver()
 // }
 
 const initDIDweb = async () => {
-    let did = await DidWebResolver.generate("did:web:objectstorage.me-jeddah-1.oraclecloud.com:n:axnfm4jb3i73:b:did-storage:o:user1")
+    let did = await DidWebResolver.generate("did:web:axnfm4jb3i73.objectstorage.me-jeddah-1.oci.customer-oci.com:n:axnfm4jb3i73:b:did-storage:o:user1")
     console.log("This is my did", did)
     // const { didDocument: _, ...didNew} = did;
     // let did2 = await DidWebResolver.generate("did:web:tel-did-web-storage.dxt.online:didDocs:Aneesha-DOE")
 
-    let createContent = did.didDocument;
+    let createContent = {didDocument: did.didDocument };
     let updateContent = { did: did.did, didDocument: did.didDocument };
     // const { id: _, ...fakeDid} = content;
     // let content = { ...did.didDocument, name: "aneesha" }
@@ -60,7 +60,7 @@ const initDIDweb = async () => {
     }
     
     // When I am uploading the diddocument for the first time, I cannot resolve the did so I check against the content
-    let didDoc: DIDDocument = signed_message.content as DIDDocument
+    let didDoc: DIDDocument = signed_message.content.didDocument as DIDDocument
     let publicKey: PublicJwk = didDoc.verificationMethod![0].publicKeyJwk as PublicJwk
 
     let verified_message_did = await verifyWithPublicKey(signed_message, publicKey!)
