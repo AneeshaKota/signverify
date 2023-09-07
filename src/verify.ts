@@ -6,7 +6,7 @@ import { PublicJwk } from "./jose/types.js";
 import { generateCid, parseCid } from "./utils/cid.js";
 
 export type APIBody = {
-    content: DIDDocument,
+    content: any,
     authorisation : GeneralJws
 }
 

@@ -37,26 +37,27 @@ let didResolver = new DidResolver()
 // }
 
 const initDIDweb = async () => {
-    let did = await DidWebResolver.generate("did:web:tel-did-web-storage.dxt.online:didDocs:Jane-DOE", "secp256k1")
+    let did = await DidWebResolver.generate("did:web:objectstorage.me-jeddah-1.oraclecloud.com:n:axnfm4jb3i73:b:did-storage:o:user1")
     console.log("This is my did", did)
-    const { didDocument: _, ...didNew} = did;
-    let did2 = await DidWebResolver.generate("did:web:tel-did-web-storage.dxt.online:didDocs:Jane-DOE", "secp256k1")
+    // const { didDocument: _, ...didNew} = did;
+    // let did2 = await DidWebResolver.generate("did:web:tel-did-web-storage.dxt.online:didDocs:Aneesha-DOE")
 
-    let content = did.didDocument
+    let createContent = did.didDocument;
+    let updateContent = { did: did.did, didDocument: did.didDocument };
     // const { id: _, ...fakeDid} = content;
     // let content = { ...did.didDocument, name: "aneesha" }
-    console.log("verification method - ", content?.verificationMethod);
+    console.log("verification method - ", updateContent?.didDocument.verificationMethod);
     
     // as the message sender, I have access to my private key so can create the authorisation object
-    let authorisation = await sign(content, createSignatureInput(didNew))
+    let createAuthorisation = await sign(createContent, createSignatureInput(did))
+    console.log("create authorisation - ", createAuthorisation);
+    let updateAuthorisation = await sign(updateContent, createSignatureInput(did))
+    console.log("update authorization - ", updateAuthorisation);
 
     let signed_message: any = {
-        content: content,
-        authorisation: authorisation
+        content: createContent,
+        authorisation: createAuthorisation
     }
-    
-    console.log("the signed message by me ", signed_message)
-    console.log("signatures - ", signed_message.authorisation.signatures);
     
     // When I am uploading the diddocument for the first time, I cannot resolve the did so I check against the content
     let didDoc: DIDDocument = signed_message.content as DIDDocument

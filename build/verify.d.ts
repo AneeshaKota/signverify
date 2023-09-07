@@ -1,8 +1,8 @@
-import { DIDDocument, DidWithKeys } from "./did/types.js";
+import { DidWithKeys } from "./did/types.js";
 import { GeneralJws, SignatureInput } from "./jose/general/types.js";
 import { PublicJwk } from "./jose/types.js";
 export type APIBody = {
-    content: DIDDocument;
+    content: any;
     authorisation: GeneralJws;
 };
 export declare function verify(message: APIBody): Promise<{
